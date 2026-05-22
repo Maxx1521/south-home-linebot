@@ -1,5 +1,6 @@
 import os
-from datetime import datetime, timedelta, timezone
+import re
+from datetime import datetime, timedelta, timezone, date as date_type
 from linebot.v3.messaging import (
     FlexMessage, FlexContainer, TextMessage,
     QuickReply, QuickReplyItem, PostbackAction, MessageAction,
@@ -9,6 +10,7 @@ from supabase import create_client
 
 _supabase = None
 
+WAITING_DATE    = "waiting_date"
 WAITING_NAME    = "waiting_name"
 WAITING_PHONE   = "waiting_phone"
 WAITING_ADDRESS = "waiting_address"
@@ -52,6 +54,62 @@ def _delete_session(user_id):
 
 
 # ── 預約流程 ─────────────────────────────────────
+
+def ask_for_date(user_id, appt_type="丈量預約"):
+    _upsert_session({"user_id": user_id, "state": WAITING_DATE, "appt_type": appt_type})
+    return TextMessage(
+        text="目前預約系統僅開放未來 7 天的時段，請直接打上想預約的日期 📅\n（例如：6月20日、6/20）"
+    )
+
+
+def handle_date_input(user_id, text, session):
+    date_str = _parse_date_text(text)
+    if not date_str:
+        return TextMessage(
+            text="無法識別日期，請輸入格式如「6月20日」或「6/20」"
+        )
+    appt_type = session.get("appt_type", "丈量預約")
+    product   = session.get("product")
+    _delete_session(user_id)
+    return select_time(date_str, product, appt_type)
+
+
+def _parse_date_text(text):
+    """從文字中解析日期，回傳 'YYYY-MM-DD' 或 None。"""
+    now  = datetime.now()
+    year = now.year
+
+    # YYYY-MM-DD 或 YYYY/MM/DD
+    m = re.search(r'(\d{4})[-/](\d{1,2})[-/](\d{1,2})', text)
+    if m:
+        return f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+
+    # M月D日 / M月D號
+    m = re.search(r'(\d{1,2})月(\d{1,2})[日號]?', text)
+    if m:
+        month, day = int(m.group(1)), int(m.group(2))
+        target = _resolve_year(year, month, day, now)
+        return target.strftime('%Y-%m-%d') if target else None
+
+    # M/D 或 MM/DD
+    m = re.search(r'(\d{1,2})/(\d{1,2})', text)
+    if m:
+        month, day = int(m.group(1)), int(m.group(2))
+        target = _resolve_year(year, month, day, now)
+        return target.strftime('%Y-%m-%d') if target else None
+
+    return None
+
+
+def _resolve_year(year, month, day, now):
+    try:
+        target = date_type(year, month, day)
+        if target <= now.date():
+            target = date_type(year + 1, month, day)
+        return target
+    except ValueError:
+        return None
+
 
 _WEEKDAYS = ["(一)", "(二)", "(三)", "(四)", "(五)", "(六)", "(日)"]
 
