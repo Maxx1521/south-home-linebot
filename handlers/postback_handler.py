@@ -1,7 +1,7 @@
 from urllib.parse import parse_qs
 from linebot.v3.messaging import ReplyMessageRequest, TextMessage
 from handlers.catalog import get_category_flex, get_products_flex
-from handlers.booking import start_booking, select_time, confirm_booking
+from handlers.booking import start_booking, select_time, ask_for_name
 
 
 def handle_postback(event, line_bot_api):
@@ -37,7 +37,7 @@ def handle_postback(event, line_bot_api):
         date = data.get("date", [""])[0]
         time = data.get("time", [""])[0]
         product = data.get("product", [None])[0]
-        reply = confirm_booking(user_id, date, time, product, appt_type)
+        reply = ask_for_name(user_id, appt_type, date, time, product)
 
     else:
         reply = TextMessage(text="請輸入「選單」查看服務項目。")
