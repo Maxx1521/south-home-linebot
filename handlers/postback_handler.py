@@ -28,7 +28,17 @@ def handle_postback(event, line_bot_api):
         reply = start_booking(product, appt_type)
 
     elif action == "store_visit":
-        reply = start_booking(appt_type="門市參觀", store=store)
+        if store:
+            reply = start_booking(appt_type="門市參觀", store=store)
+        else:
+            reply = TextMessage(
+                text="🏠 門市參觀\n\n請問您想預約哪間門市？",
+                quick_reply=QuickReply(items=[
+                    QuickReplyItem(action=PostbackAction(label="左營店", data="action=store_visit&store=左營店")),
+                    QuickReplyItem(action=PostbackAction(label="三民店", data="action=store_visit&store=三民店")),
+                    QuickReplyItem(action=PostbackAction(label="苓雅店", data="action=store_visit&store=苓雅店")),
+                ])
+            )
 
     elif action == "color_selection":
         from handlers.message_handler import _color_selection_message
