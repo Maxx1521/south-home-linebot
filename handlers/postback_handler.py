@@ -5,6 +5,7 @@ from handlers.booking import (
     start_booking, select_time, ask_for_name,
     handle_confirm, handle_edit_field, get_session
 )
+from handlers.location import start_location_inquiry
 
 
 def handle_postback(event, line_bot_api):
@@ -56,6 +57,9 @@ def handle_postback(event, line_bot_api):
             reply = handle_edit_field(user_id, field, session)
         else:
             reply = TextMessage(text="找不到您的預約資料，請重新開始。")
+
+    elif action == "location_inquiry":
+        reply = start_location_inquiry(user_id)
 
     else:
         reply = TextMessage(text="請輸入「選單」查看服務項目。")
