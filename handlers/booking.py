@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from linebot.v3.messaging import (
     FlexMessage, FlexContainer, TextMessage,
     QuickReply, QuickReplyItem, PostbackAction,
@@ -38,7 +38,8 @@ def get_session(user_id):
 
 def _upsert_session(data):
     try:
-        get_supabase().table("user_sessions").upsert(data).execute()
+        payload = {**data, "updated_at": datetime.now(timezone.utc).isoformat()}
+        get_supabase().table("user_sessions").upsert(payload).execute()
     except Exception as e:
         print(f"[session upsert error] {e}")
 
@@ -263,6 +264,20 @@ def _success_card(session):
 
 
 # ── 推播通知 ─────────────────────────────────────
+
+def push_success_to_customer(user_id, session):
+    token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
+    if not token:
+        return
+    try:
+        config = Configuration(access_token=token)
+        with ApiClient(config) as client:
+            MessagingApi(client).push_message(
+                PushMessageRequest(to=user_id, messages=[_success_card(session)])
+            )
+    except Exception as e:
+        print(f"[push customer error] {e}")
+
 
 def push_owner_notification(appt_type, date, time, name, phone, address, product):
     owner_id = os.environ.get("OWNER_LINE_USER_ID")
