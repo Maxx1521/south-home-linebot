@@ -5,7 +5,7 @@ from linebot.v3.messaging import (
 )
 from handlers.catalog import get_category_flex
 from handlers.booking import (
-    start_booking, get_session,
+    start_booking, get_session, select_time, _parse_date_text,
     handle_name_input, handle_phone_input, handle_address_input,
     ask_for_date, handle_date_input,
     WAITING_DATE, WAITING_NAME, WAITING_PHONE, WAITING_ADDRESS, WAITING_CONFIRM
@@ -50,6 +50,15 @@ def handle_text_message(event, line_bot_api):
             reply = handle_area_input(user_id, text)
         else:
             reply = TextMessage(text="請輸入「選單」查看服務項目。")
+        line_bot_api.reply_message(
+            ReplyMessageRequest(reply_token=event.reply_token, messages=[reply])
+        )
+        return
+
+    # 直接輸入日期 → 跳時段選擇
+    date_str = _parse_date_text(text)
+    if date_str:
+        reply = select_time(date_str)
         line_bot_api.reply_message(
             ReplyMessageRequest(reply_token=event.reply_token, messages=[reply])
         )
