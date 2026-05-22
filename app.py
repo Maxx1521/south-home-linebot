@@ -30,16 +30,22 @@ def webhook():
 
 @handler.add(MessageEvent, message=TextMessageContent)
 def on_message(event):
-    with ApiClient(configuration) as api_client:
-        line_bot_api = MessagingApi(api_client)
-        handle_text_message(event, line_bot_api)
+    try:
+        with ApiClient(configuration) as api_client:
+            line_bot_api = MessagingApi(api_client)
+            handle_text_message(event, line_bot_api)
+    except Exception as e:
+        print(f"[on_message error] {e}")
 
 
 @handler.add(PostbackEvent)
 def on_postback(event):
-    with ApiClient(configuration) as api_client:
-        line_bot_api = MessagingApi(api_client)
-        handle_postback(event, line_bot_api)
+    try:
+        with ApiClient(configuration) as api_client:
+            line_bot_api = MessagingApi(api_client)
+            handle_postback(event, line_bot_api)
+    except Exception as e:
+        print(f"[on_postback error] {e}")
 
 
 if __name__ == "__main__":

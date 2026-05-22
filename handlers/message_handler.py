@@ -9,12 +9,16 @@ from handlers.booking import (
     handle_name_input, handle_phone_input, handle_address_input,
     WAITING_NAME, WAITING_PHONE, WAITING_ADDRESS, WAITING_CONFIRM
 )
+from handlers.location import (
+    start_location_inquiry, handle_area_input, WAITING_AREA
+)
 
 
 MENU_KEYWORDS        = ["選單", "menu", "Menu", "MENU", "你好", "hi", "Hi", "HI", "hello", "Hello"]
 CATALOG_KEYWORDS     = ["產品", "目錄", "地板", "看地板", "產品目錄"]
 BOOKING_KEYWORDS     = ["預約", "丈量", "到府", "預約丈量", "丈量預約"]
-STORE_VISIT_KEYWORDS = ["門市", "門市參觀", "參觀", "來店"]
+STORE_VISIT_KEYWORDS = ["門市參觀", "參觀", "來店"]
+LOCATION_KEYWORDS    = ["門市在哪", "門市地址", "你們在哪", "在哪裡", "門市位置", "門市"]
 COLOR_KEYWORDS       = ["選色", "線上選色", "色卡", "顏色"]
 
 
@@ -34,6 +38,8 @@ def handle_text_message(event, line_bot_api):
             reply = handle_address_input(user_id, text, session)
         elif state == WAITING_CONFIRM:
             reply = TextMessage(text="請點選「✅ 確認送出」送出預約，或點快捷鍵修改資料。")
+        elif state == WAITING_AREA:
+            reply = handle_area_input(user_id, text)
         else:
             reply = TextMessage(text="請輸入「選單」查看服務項目。")
         line_bot_api.reply_message(
@@ -50,6 +56,8 @@ def handle_text_message(event, line_bot_api):
         reply = get_category_flex()
     elif any(k in text for k in BOOKING_KEYWORDS):
         reply = start_booking(appt_type="丈量預約")
+    elif any(k in text for k in LOCATION_KEYWORDS):
+        reply = start_location_inquiry(user_id)
     elif any(k in text for k in STORE_VISIT_KEYWORDS):
         reply = start_booking(appt_type="門市參觀")
     elif any(k in text for k in COLOR_KEYWORDS):
