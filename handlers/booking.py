@@ -18,14 +18,14 @@ def get_supabase():
     return _supabase
 
 
-def push_owner_notification(date, time, product):
+def push_owner_notification(appt_type, date, time, product):
     owner_id = os.environ.get("OWNER_LINE_USER_ID")
     token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
     if not owner_id or not token:
         return
     try:
         product_text = f"\n📦 商品：{product}" if product else ""
-        msg = f"📬 新預約通知\n\n📅 日期：{date}\n🕐 時間：{time}{product_text}\n\n請至後台確認客戶資訊。"
+        msg = f"📬 新預約通知\n\n🏷 類型：{appt_type}\n📅 日期：{date}\n🕐 時間：{time}{product_text}\n\n請至後台確認客戶資訊。"
         config = Configuration(access_token=token)
         with ApiClient(config) as client:
             MessagingApi(client).push_message(
@@ -35,29 +35,30 @@ def push_owner_notification(date, time, product):
         print(f"[push notify error] {e}")
 
 
-def start_booking(product=None):
+def start_booking(product=None, appt_type="丈量預約"):
     quick_items = []
     for i in range(1, 8):
         date = datetime.now() + timedelta(days=i)
         label = date.strftime("%m/%d (%a)")
-        data = f"action=select_date&date={date.strftime('%Y-%m-%d')}"
+        data = f"action=select_date&date={date.strftime('%Y-%m-%d')}&appt_type={appt_type}"
         if product:
             data += f"&product={product}"
         quick_items.append(
             QuickReplyItem(action=PostbackAction(label=label, data=data))
         )
 
+    icon = "📅" if appt_type == "丈量預約" else "🏠"
     return TextMessage(
-        text="📅 預約到府丈量\n\n請選擇希望的日期：",
+        text=f"{icon} {appt_type}\n\n請選擇希望的日期：",
         quick_reply=QuickReply(items=quick_items)
     )
 
 
-def select_time(date, product=None):
+def select_time(date, product=None, appt_type="丈量預約"):
     times = ["10:00", "14:00", "16:00"]
     quick_items = []
     for t in times:
-        data = f"action=select_time&date={date}&time={t}"
+        data = f"action=select_time&date={date}&time={t}&appt_type={appt_type}"
         if product:
             data += f"&product={product}"
         quick_items.append(
@@ -70,12 +71,13 @@ def select_time(date, product=None):
     )
 
 
-def confirm_booking(user_id, date, time, product=None):
+def confirm_booking(user_id, date, time, product=None, appt_type="丈量預約"):
     record = {
         "user_id": user_id,
         "date": date,
         "time": time,
         "product": product,
+        "appt_type": appt_type,
         "status": "pending",
     }
     try:
@@ -83,15 +85,16 @@ def confirm_booking(user_id, date, time, product=None):
     except Exception as e:
         print(f"[Supabase error] {e}")
 
-    push_owner_notification(date, time, product)
+    push_owner_notification(appt_type, date, time, product)
 
+    icon = "📅" if appt_type == "丈量預約" else "🏠"
     bubble = {
         "type": "bubble",
         "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
-                {"type": "text", "text": "✅ 預約確認", "weight": "bold", "size": "xl", "color": "#5C8D5E"},
+                {"type": "text", "text": f"✅ {appt_type}確認", "weight": "bold", "size": "xl", "color": "#5C8D5E"},
                 {"type": "separator", "margin": "md"},
                 {
                     "type": "box",
@@ -99,6 +102,13 @@ def confirm_booking(user_id, date, time, product=None):
                     "margin": "md",
                     "spacing": "sm",
                     "contents": [
+                        {
+                            "type": "box", "layout": "horizontal",
+                            "contents": [
+                                {"type": "text", "text": "類型", "size": "sm", "color": "#888888", "flex": 2},
+                                {"type": "text", "text": f"{icon} {appt_type}", "size": "sm", "flex": 5},
+                            ]
+                        },
                         {
                             "type": "box", "layout": "horizontal",
                             "contents": [
@@ -132,6 +142,6 @@ def confirm_booking(user_id, date, time, product=None):
     }
 
     return FlexMessage(
-        alt_text=f"預約確認 {date} {time}",
+        alt_text=f"{appt_type}確認 {date} {time}",
         contents=FlexContainer.from_dict(bubble)
     )

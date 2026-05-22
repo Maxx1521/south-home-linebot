@@ -8,6 +8,7 @@ def handle_postback(event, line_bot_api):
     data = parse_qs(event.postback.data)
     action = data.get("action", [""])[0]
     user_id = event.source.user_id
+    appt_type = data.get("appt_type", ["丈量預約"])[0]
 
     if action == "catalog":
         reply = get_category_flex()
@@ -18,18 +19,25 @@ def handle_postback(event, line_bot_api):
 
     elif action == "booking":
         product = data.get("product", [None])[0]
-        reply = start_booking(product)
+        reply = start_booking(product, appt_type)
+
+    elif action == "store_visit":
+        reply = start_booking(appt_type="門市參觀")
+
+    elif action == "color_selection":
+        from handlers.message_handler import _color_selection_message
+        reply = _color_selection_message()
 
     elif action == "select_date":
         date = data.get("date", [""])[0]
         product = data.get("product", [None])[0]
-        reply = select_time(date, product)
+        reply = select_time(date, product, appt_type)
 
     elif action == "select_time":
         date = data.get("date", [""])[0]
         time = data.get("time", [""])[0]
         product = data.get("product", [None])[0]
-        reply = confirm_booking(user_id, date, time, product)
+        reply = confirm_booking(user_id, date, time, product, appt_type)
 
     else:
         reply = TextMessage(text="請輸入「選單」查看服務項目。")

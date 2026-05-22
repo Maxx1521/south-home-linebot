@@ -1,6 +1,7 @@
+import os
 from linebot.v3.messaging import (
     ReplyMessageRequest, TextMessage, FlexMessage, FlexContainer,
-    QuickReply, QuickReplyItem, MessageAction, PostbackAction
+    QuickReply, QuickReplyItem, MessageAction, PostbackAction, URIAction
 )
 from handlers.catalog import get_category_flex
 from handlers.booking import start_booking
@@ -8,7 +9,9 @@ from handlers.booking import start_booking
 
 MENU_KEYWORDS = ["選單", "menu", "Menu", "MENU", "你好", "hi", "Hi", "HI", "hello", "Hello"]
 CATALOG_KEYWORDS = ["產品", "目錄", "地板", "看地板", "產品目錄"]
-BOOKING_KEYWORDS = ["預約", "丈量", "到府", "預約丈量"]
+BOOKING_KEYWORDS = ["預約", "丈量", "到府", "預約丈量", "丈量預約"]
+STORE_VISIT_KEYWORDS = ["門市", "門市參觀", "參觀", "來店"]
+COLOR_KEYWORDS = ["選色", "線上選色", "色卡", "顏色"]
 
 
 def handle_text_message(event, line_bot_api):
@@ -21,7 +24,11 @@ def handle_text_message(event, line_bot_api):
     elif any(k in text for k in CATALOG_KEYWORDS):
         reply = get_category_flex()
     elif any(k in text for k in BOOKING_KEYWORDS):
-        reply = start_booking()
+        reply = start_booking(appt_type="丈量預約")
+    elif any(k in text for k in STORE_VISIT_KEYWORDS):
+        reply = start_booking(appt_type="門市參觀")
+    elif any(k in text for k in COLOR_KEYWORDS):
+        reply = _color_selection_message()
     else:
         reply = TextMessage(text="您好！請點選下方選單，或輸入「選單」查看服務項目 🌿")
 
@@ -30,18 +37,53 @@ def handle_text_message(event, line_bot_api):
     )
 
 
+def _color_selection_message():
+    color_url = os.environ.get("COLOR_SELECTION_URL", "https://notion.so")
+    bubble = {
+        "type": "bubble",
+        "hero": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {"type": "text", "text": "🎨", "size": "5xl", "align": "center", "margin": "xl"},
+                {"type": "text", "text": "線上選色", "weight": "bold", "size": "xl",
+                 "align": "center", "color": "#5C8D5E", "margin": "md"},
+                {"type": "text", "text": "瀏覽我們精選的地板色系\n找到最適合您家的風格",
+                 "size": "sm", "align": "center", "color": "#888888", "wrap": True, "margin": "sm"},
+            ],
+            "paddingAll": "20px",
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "button",
+                    "action": {"type": "uri", "label": "前往線上選色 →", "uri": color_url},
+                    "style": "primary",
+                    "color": "#5C8D5E",
+                }
+            ],
+        },
+    }
+    return FlexMessage(alt_text="線上選色", contents=FlexContainer.from_dict(bubble))
+
+
 def _main_menu():
     return TextMessage(
         text="歡迎來到南島家居 South Home 🌿\n\n請選擇服務：",
         quick_reply=QuickReply(items=[
             QuickReplyItem(action=PostbackAction(
-                label="🪵 產品目錄", data="action=catalog"
+                label="📅 丈量預約", data="action=booking&appt_type=丈量預約"
             )),
             QuickReplyItem(action=PostbackAction(
-                label="📅 預約丈量", data="action=booking"
+                label="🏠 門市參觀", data="action=store_visit"
             )),
-            QuickReplyItem(action=MessageAction(
-                label="📞 聯絡我們", text="請問聯絡方式？"
+            QuickReplyItem(action=PostbackAction(
+                label="🎨 線上選色", data="action=color_selection"
+            )),
+            QuickReplyItem(action=PostbackAction(
+                label="🪵 產品目錄", data="action=catalog"
             )),
         ])
     )
