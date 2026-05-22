@@ -21,7 +21,7 @@ BOOKING_KEYWORDS     = ["預約", "丈量", "到府", "預約丈量", "丈量預
 STORE_VISIT_KEYWORDS = ["門市參觀", "參觀", "來店"]
 LOCATION_KEYWORDS    = ["門市在哪", "門市地址", "你們在哪", "門市位置", "門市地點", "地址在哪", "地址在哪裡", "在哪裡", "門市"]
 COLOR_KEYWORDS       = ["選色", "線上選色", "色卡", "顏色"]
-OTHER_DATE_KEYWORDS  = ["還有其他時間", "其他時間", "其他日期", "換個時間", "可以換時間", "其他時段", "沒有其他"]
+OTHER_DATE_KEYWORDS  = ["還有其他時間", "其他時間", "其他日期", "換個時間", "可以換時間", "其他時段", "沒有其他", "其他時間可以選嗎"]
 
 
 def handle_text_message(event, line_bot_api):
