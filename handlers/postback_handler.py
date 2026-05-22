@@ -40,7 +40,7 @@ def handle_postback(event, line_bot_api):
         date = data.get("date", [""])[0]
         time = data.get("time", [""])[0]
         product = data.get("product", [None])[0]
-        reply = ask_for_name(user_id, appt_type, date, time, product)
+        reply = ask_for_name(user_id, appt_type, date, time, product, line_bot_api)
 
     elif action == "confirm_booking":
         session = get_session(user_id)

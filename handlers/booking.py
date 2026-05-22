@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from linebot.v3.messaging import (
     FlexMessage, FlexContainer, TextMessage,
-    QuickReply, QuickReplyItem, PostbackAction,
+    QuickReply, QuickReplyItem, PostbackAction, MessageAction,
     ApiClient, Configuration, MessagingApi, PushMessageRequest
 )
 from supabase import create_client
@@ -90,7 +90,7 @@ def select_time(date, product=None, appt_type="丈量預約"):
     )
 
 
-def ask_for_name(user_id, appt_type, date, time, product=None):
+def ask_for_name(user_id, appt_type, date, time, product=None, line_bot_api=None):
     _upsert_session({
         "user_id": user_id,
         "state": WAITING_NAME,
@@ -99,7 +99,25 @@ def ask_for_name(user_id, appt_type, date, time, product=None):
         "time": time,
         "product": product,
     })
-    return TextMessage(text="好的！請問您的姓名？")
+
+    quick_items = []
+    if line_bot_api:
+        try:
+            profile = line_bot_api.get_profile(user_id)
+            if profile.display_name:
+                quick_items.append(
+                    QuickReplyItem(action=MessageAction(
+                        label=f"👤 {profile.display_name}",
+                        text=profile.display_name,
+                    ))
+                )
+        except Exception as e:
+            print(f"[get profile error] {e}")
+
+    return TextMessage(
+        text="好的！請問您的姓名？\n（可直接點選下方帶入 LINE 名稱）",
+        quick_reply=QuickReply(items=quick_items) if quick_items else None,
+    )
 
 
 def handle_name_input(user_id, name, session):
