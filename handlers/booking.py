@@ -62,7 +62,7 @@ def _delete_session(user_id):
 def ask_for_date(user_id, appt_type="丈量預約"):
     _upsert_session({"user_id": user_id, "state": WAITING_DATE, "appt_type": appt_type})
     return TextMessage(
-        text="目前預約系統僅開放未來 7 天的時段，請直接打上想預約的日期 📅\n（例如：6月20日、6/20）"
+        text="目前預約系統開放未來 15 天的時段，請直接打上想預約的日期 📅\n（例如：6月20日、6/20）"
     )
 
 
@@ -120,7 +120,7 @@ _WEEKDAYS = ["(一)", "(二)", "(三)", "(四)", "(五)", "(六)", "(日)"]
 
 def start_booking(product=None, appt_type="丈量預約"):
     quick_items = []
-    for i in range(1, 8):
+    for i in range(1, 14):
         date = datetime.now() + timedelta(days=i)
         label = date.strftime("%m/%d") + _WEEKDAYS[date.weekday()]
         data = f"action=select_date&date={date.strftime('%Y-%m-%d')}&appt_type={appt_type}"
@@ -131,7 +131,7 @@ def start_booking(product=None, appt_type="丈量預約"):
         )
     icon = "📅" if appt_type == "丈量預約" else "🏠"
     return TextMessage(
-        text=f"{icon} {appt_type}\n\n請選擇希望的日期：",
+        text=f"{icon} {appt_type}\n\n請選擇希望的日期（開放未來 15 天）：\n若所需日期不在選項中，請直接輸入，例如：6/20",
         quick_reply=QuickReply(items=quick_items)
     )
 

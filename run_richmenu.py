@@ -20,15 +20,15 @@ menu = {
     "areas": [
         {
             "bounds": {"x": 0, "y": 0, "width": COL, "height": TOP_H},
-            "action": {"type": "message", "text": "估價", "label": "免費估價"}
+            "action": {"type": "postback", "data": "action=booking&appt_type=丈量預約", "label": "到府丈量"}
         },
         {
             "bounds": {"x": COL, "y": 0, "width": COL, "height": TOP_H},
-            "action": {"type": "message", "text": "案例", "label": "施工案例"}
+            "action": {"type": "postback", "data": "action=store_visit", "label": "預約參觀"}
         },
         {
             "bounds": {"x": COL * 2, "y": 0, "width": COL + 1, "height": TOP_H},
-            "action": {"type": "message", "text": "材質", "label": "材質介紹"}
+            "action": {"type": "postback", "data": "action=catalog", "label": "產品選擇"}
         },
     ]
 }
@@ -59,8 +59,8 @@ except:
 
 # 上排三格
 top_colors = ["#888888", "#888888", "#888888"]
-top_labels = ["免費估價", "施工案例", "材質介紹"]
-top_subs   = ["免費到府丈量報價", "近期工程實例", "超耐磨/海島/實木"]
+top_labels = ["到府丈量", "預約參觀", "產品選擇"]
+top_subs   = ["免費到府丈量報價", "預約門市參觀", "超耐磨/海島/實木"]
 
 for i, (color, title, sub) in enumerate(zip(top_colors, top_labels, top_subs)):
     x0 = i * COL
