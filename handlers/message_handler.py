@@ -109,10 +109,10 @@ def _fallback_menu(text=""):
     return TextMessage(
         text=msg,
         quick_reply=QuickReply(items=[
-            QuickReplyItem(action=PostbackAction(label="📅 丈量預約", data="action=booking&appt_type=丈量預約")),
-            QuickReplyItem(action=PostbackAction(label="🏠 門市參觀", data="action=store_visit")),
-            QuickReplyItem(action=PostbackAction(label="🏠 門市地址", data="action=location_inquiry")),
-            QuickReplyItem(action=PostbackAction(label="🪵 產品目錄", data="action=catalog")),
+            QuickReplyItem(action=PostbackAction(label="📅 丈量預約", data="action=booking&appt_type=丈量預約", display_text="📅 丈量預約")),
+            QuickReplyItem(action=PostbackAction(label="🏠 門市參觀", data="action=store_visit", display_text="🏠 門市參觀")),
+            QuickReplyItem(action=PostbackAction(label="🏠 門市地址", data="action=location_inquiry", display_text="🏠 門市地址")),
+            QuickReplyItem(action=PostbackAction(label="🪵 產品目錄", data="action=catalog", display_text="🪵 產品目錄")),
         ])
     )
 
@@ -148,10 +148,10 @@ def _main_menu():
     return TextMessage(
         text="歡迎來到南島家居 South Home 🌿\n\n請選擇服務：",
         quick_reply=QuickReply(items=[
-            QuickReplyItem(action=PostbackAction(label="📅 丈量預約", data="action=booking&appt_type=丈量預約")),
-            QuickReplyItem(action=PostbackAction(label="🏠 門市參觀", data="action=store_visit")),
-            QuickReplyItem(action=PostbackAction(label="🎨 線上選色", data="action=color_selection")),
-            QuickReplyItem(action=PostbackAction(label="🪵 產品目錄", data="action=catalog")),
+            QuickReplyItem(action=PostbackAction(label="📅 丈量預約", data="action=booking&appt_type=丈量預約", display_text="📅 丈量預約")),
+            QuickReplyItem(action=PostbackAction(label="🏠 門市參觀", data="action=store_visit", display_text="🏠 門市參觀")),
+            QuickReplyItem(action=PostbackAction(label="🎨 線上選色", data="action=color_selection", display_text="🎨 線上選色")),
+            QuickReplyItem(action=PostbackAction(label="🪵 產品目錄", data="action=catalog", display_text="🪵 產品目錄")),
         ])
     )
 

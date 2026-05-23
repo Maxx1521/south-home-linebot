@@ -149,7 +149,7 @@ def start_booking(product=None, appt_type="丈量預約", store=None, user_id=No
         if store:
             data += f"&store={store}"
         quick_items.append(
-            QuickReplyItem(action=PostbackAction(label=label, data=data))
+            QuickReplyItem(action=PostbackAction(label=label, data=data, display_text=label))
         )
     if appt_type == "門市參觀" and store:
         addr = _STORE_ADDRESSES.get(store, "")
@@ -176,7 +176,7 @@ def select_time(date, product=None, appt_type="丈量預約", store=None):
         if store:
             data += f"&store={store}"
         quick_items.append(
-            QuickReplyItem(action=PostbackAction(label=t, data=data))
+            QuickReplyItem(action=PostbackAction(label=t, data=data, display_text=t))
         )
     return TextMessage(
         text=f"📅 已選擇 {date}\n\n請選擇希望的時段：",
@@ -305,19 +305,19 @@ def _review_card(session):
             "contents": [{
                 "type": "button",
                 "action": {"type": "postback", "label": "✅ 確認送出",
-                           "data": "action=confirm_booking"},
+                           "data": "action=confirm_booking", "displayText": "✅ 確認送出"},
                 "style": "primary", "color": "#5C8D5E",
             }],
         },
     }
 
     edit_items = [
-        QuickReplyItem(action=PostbackAction(label="✏️ 改姓名", data="action=edit_field&field=name")),
-        QuickReplyItem(action=PostbackAction(label="✏️ 改電話", data="action=edit_field&field=phone")),
+        QuickReplyItem(action=PostbackAction(label="✏️ 改姓名", data="action=edit_field&field=name", display_text="✏️ 改姓名")),
+        QuickReplyItem(action=PostbackAction(label="✏️ 改電話", data="action=edit_field&field=phone", display_text="✏️ 改電話")),
     ]
     if appt_type != "門市參觀":
         edit_items.append(
-            QuickReplyItem(action=PostbackAction(label="✏️ 改地址", data="action=edit_field&field=address"))
+            QuickReplyItem(action=PostbackAction(label="✏️ 改地址", data="action=edit_field&field=address", display_text="✏️ 改地址"))
         )
     quick_reply = QuickReply(items=edit_items)
 

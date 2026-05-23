@@ -36,9 +36,9 @@ def handle_postback(event, line_bot_api):
             reply = TextMessage(
                 text="🏠 門市參觀\n\n請問您想預約哪間門市？",
                 quick_reply=QuickReply(items=[
-                    QuickReplyItem(action=PostbackAction(label="左營南屏店", data="action=store_visit&store=左營店")),
-                    QuickReplyItem(action=PostbackAction(label="三民大昌店", data="action=store_visit&store=三民店")),
-                    QuickReplyItem(action=PostbackAction(label="苓雅青年店", data="action=store_visit&store=苓雅店")),
+                    QuickReplyItem(action=PostbackAction(label="左營南屏店", data="action=store_visit&store=左營店", display_text="左營南屏店")),
+                    QuickReplyItem(action=PostbackAction(label="三民大昌店", data="action=store_visit&store=三民店", display_text="三民大昌店")),
+                    QuickReplyItem(action=PostbackAction(label="苓雅青年店", data="action=store_visit&store=苓雅店", display_text="苓雅青年店")),
                 ])
             )
 
