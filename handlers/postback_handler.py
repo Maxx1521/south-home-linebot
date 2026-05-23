@@ -2,7 +2,7 @@ from urllib.parse import parse_qs
 from linebot.v3.messaging import (
     ReplyMessageRequest, TextMessage, QuickReply, QuickReplyItem, PostbackAction
 )
-from handlers.catalog import get_category_flex, get_products_flex
+from handlers.catalog import get_category_flex, get_products_flex, get_brand_products_flex
 from handlers.booking import (
     start_booking, select_time, ask_for_name,
     handle_confirm, handle_edit_field, get_session, _delete_session,
@@ -25,6 +25,10 @@ def handle_postback(event, line_bot_api):
     elif action == "view_category":
         category = data.get("category", [""])[0]
         reply = get_products_flex(category)
+
+    elif action == "view_brand":
+        brand = data.get("brand", [""])[0]
+        reply = get_brand_products_flex(brand)
 
     elif action == "booking":
         product = data.get("product", [None])[0]
