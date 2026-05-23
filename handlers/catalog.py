@@ -30,22 +30,36 @@ CATEGORY_ORDER = ["海島型實木地板", "超耐磨木地板", "石塑地板",
 # 超耐磨木地板：品牌 → 款式
 LAMINATE_BRANDS = {
     "山井富士山": {
-        "image": "https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/sanwell_card.jpg",
+        "image": "https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/sanwell_logo_card.jpg",
         "desc": "抗水白基材 24小時防水滲、日系獨家花色",
         "products": [
             {
                 "name": "典藏款",
                 "desc": "9.5mm｜抗水超耐磨｜日系花色設計",
                 "price": "NT$ 3,700/坪",
-                "colors": ["宮崎白梣", "富山白橡", "千葉秋香", "佐賀榆木", "京都淺橡", "奈良灰橡", "長野檜木", "熊本橡木"],
-                "url": "https://www.kaiser-floor.com/products/index.php?group_id=12876&second_id=22075&title_id=14315",
+                "colors": [
+                    {"name": "宮崎白梣", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E5%AE%AE%E5%B4%8E%E7%99%BD%E6%A2%A3-1.jpg"},
+                    {"name": "富山白橡", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E5%AF%8C%E5%B1%B1%E7%99%BD%E6%A9%A1.jpg"},
+                    {"name": "千葉秋香", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E5%8D%83%E8%91%89%E7%A7%8B%E9%A6%99-1.jpg"},
+                    {"name": "佐賀榆木", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E4%BD%90%E8%B3%80%E6%A6%86%E6%9C%A8-1.jpg"},
+                    {"name": "京都淺橡", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E4%BA%AC%E9%83%BD%E6%B7%BA%E6%A9%A1-1.jpg"},
+                    {"name": "奈良灰橡", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E5%A5%88%E8%89%AF%E7%81%B0%E6%A9%A1-1.jpg"},
+                    {"name": "長野檜木", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E9%95%B7%E9%87%8E%E6%AA%9C%E6%9C%A8-1.jpg"},
+                    {"name": "熊本橡木", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E7%86%8A%E6%9C%AC%E6%A9%A1%E6%9C%A8-1.jpg"},
+                ],
+                "url": "https://shengyang1688.com/portfolio-item/%E5%B1%B1%E4%BA%95%E5%8D%A1%E6%89%A3%E8%B6%85%E8%80%90%E7%A3%A89-5mm/",
             },
             {
                 "name": "尊爵款",
                 "desc": "13.5mm｜頂級厚實踏感｜精選花色",
                 "price": "NT$ 4,250/坪",
-                "colors": ["高知橡木", "姬路白橡", "銀山淺橡", "慕尼黑"],
-                "url": "https://www.kaiser-floor.com/products/index.php?group_id=12876&second_id=22075&title_id=14315",
+                "colors": [
+                    {"name": "高知橡木", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E9%AB%98%E7%9F%A5%E6%A9%A1%E6%9C%A8-1.jpg"},
+                    {"name": "姬路白橡", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E5%A7%AC%E8%B7%AF%E7%99%BD%E6%A9%A1.jpg"},
+                    {"name": "銀山淺橡", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E9%8A%80%E5%B1%B1%E6%B7%BA%E6%A9%A1-1.jpg"},
+                    {"name": "慕尼黑", "image": "https://shengyang1688.com/wp-content/uploads/2025/07/%E6%85%95%E5%B0%BC%E9%BB%91-1.jpg"},
+                ],
+                "url": "https://shengyang1688.com/portfolio-item/%E5%B1%B1%E4%BA%95%E5%8D%A1%E6%89%A3%E8%B6%85%E8%80%90%E7%A3%A813-5mm/",
             },
         ],
     },
@@ -357,11 +371,13 @@ def get_product_colors(brand, product_name):
 
     bubbles = []
     for color in colors:
+        color_name = color["name"] if isinstance(color, dict) else color
+        color_img = color["image"] if isinstance(color, dict) else info["image"]
         bubble = {
             "type": "bubble",
             "hero": {
                 "type": "image",
-                "url": info["image"],
+                "url": color_img,
                 "size": "full",
                 "aspectRatio": "20:13",
                 "aspectMode": "cover",
@@ -372,7 +388,7 @@ def get_product_colors(brand, product_name):
                 "contents": [
                     {"type": "text", "text": brand, "size": "sm", "color": "#888888"},
                     {"type": "text", "text": product_name, "weight": "bold", "size": "md", "margin": "sm"},
-                    {"type": "text", "text": color, "weight": "bold", "size": "lg", "color": "#333333", "margin": "sm"},
+                    {"type": "text", "text": color_name, "weight": "bold", "size": "lg", "color": "#333333", "margin": "sm"},
                 ],
             },
             "footer": {
