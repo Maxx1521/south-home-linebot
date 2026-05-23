@@ -359,7 +359,7 @@ def get_product_colors(brand, product_name):
         return TextMessage(text="此款式花色資料尚未建立，歡迎來門市看實品！")
 
     colors = product["colors"]
-    colors_text = "・".join(colors)
+    colors_text = "・".join(c["name"] if isinstance(c, dict) else c for c in colors)
     url = product.get("url")
 
     footer_buttons = []
