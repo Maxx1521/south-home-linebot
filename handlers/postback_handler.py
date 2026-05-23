@@ -1,5 +1,7 @@
 from urllib.parse import parse_qs
-from linebot.v3.messaging import ReplyMessageRequest, TextMessage
+from linebot.v3.messaging import (
+    ReplyMessageRequest, TextMessage, QuickReply, QuickReplyItem, PostbackAction
+)
 from handlers.catalog import get_category_flex, get_products_flex
 from handlers.booking import (
     start_booking, select_time, ask_for_name,
