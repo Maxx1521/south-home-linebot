@@ -31,6 +31,7 @@ CATEGORY_ORDER = ["海島型實木地板", "超耐磨木地板", "石塑地板",
 LAMINATE_BRANDS = {
     "山井富士山": {
         "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800",
+        "desc": "抗水白基材 24小時防水滲、日系獨家花色",
         "products": [
             {
                 "name": "典藏款",
@@ -246,6 +247,7 @@ def _laminate_brands_flex():
                     {"type": "text", "text": brand, "weight": "bold", "size": "md"},
                     {"type": "text", "text": f"{len(info['products'])} 款", "size": "sm", "color": "#888888", "margin": "sm"},
                     {"type": "text", "text": price_text, "size": "sm", "color": "#4CAF50", "margin": "sm"},
+                    *([{"type": "text", "text": info["desc"], "size": "sm", "color": "#666666", "margin": "sm", "wrap": True}] if info.get("desc") else []),
                 ],
             },
             "footer": {
