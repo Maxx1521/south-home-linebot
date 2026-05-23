@@ -288,7 +288,6 @@ def get_brand_products_flex(brand):
                     "type": "postback",
                     "label": "🎨 查看花色",
                     "data": f"action=view_colors&brand={brand}&product={p['name']}",
-                    "displayText": f"查看 {p['name']} 花色",
                 },
             })
         footer_buttons.append({
@@ -364,31 +363,35 @@ def get_product_colors(brand, product_name):
         },
     })
 
-    bubble = {
-        "type": "bubble",
-        "hero": {
-            "type": "image",
-            "url": info["image"],
-            "size": "full",
-            "aspectRatio": "20:13",
-            "aspectMode": "cover",
-        },
-        "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-                {"type": "text", "text": brand, "size": "sm", "color": "#888888"},
-                {"type": "text", "text": product_name, "weight": "bold", "size": "md", "margin": "sm"},
-                {"type": "text", "text": product["desc"], "size": "sm", "color": "#666666", "margin": "sm", "wrap": True},
-                {"type": "text", "text": f"🎨 共 {len(colors)} 款花色", "size": "sm", "color": "#5C8D5E", "margin": "md", "weight": "bold"},
-                {"type": "text", "text": colors_text, "size": "sm", "color": "#444444", "wrap": True, "margin": "sm"},
-            ],
-        },
-        "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "sm",
-            "contents": footer_buttons,
-        },
-    }
-    return FlexMessage(alt_text=f"{brand} {product_name} 花色", contents=FlexContainer.from_dict(bubble))
+    bubbles = []
+    for color in colors:
+        bubble = {
+            "type": "bubble",
+            "hero": {
+                "type": "image",
+                "url": info["image"],
+                "size": "full",
+                "aspectRatio": "20:13",
+                "aspectMode": "cover",
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {"type": "text", "text": brand, "size": "sm", "color": "#888888"},
+                    {"type": "text", "text": product_name, "weight": "bold", "size": "md", "margin": "sm"},
+                    {"type": "text", "text": color, "weight": "bold", "size": "lg", "color": "#333333", "margin": "sm"},
+                    {"type": "text", "text": product["price"], "size": "sm", "color": "#4CAF50", "margin": "md", "weight": "bold"},
+                ],
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "sm",
+                "contents": footer_buttons,
+            },
+        }
+        bubbles.append(bubble)
+
+    carousel = {"type": "carousel", "contents": bubbles}
+    return FlexMessage(alt_text=f"{brand} {product_name} 花色", contents=FlexContainer.from_dict(carousel))
