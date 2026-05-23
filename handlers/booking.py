@@ -252,6 +252,15 @@ def handle_confirm(user_id, session):
 
 def handle_edit_field(user_id, field, session):
     """客戶要修改某一欄位"""
+    if field == "store":
+        return TextMessage(
+            text="請選擇要更換的門市：",
+            quick_reply=QuickReply(items=[
+                QuickReplyItem(action=PostbackAction(label="左營南屏店", data="action=update_store&store=左營店", display_text="左營南屏店")),
+                QuickReplyItem(action=PostbackAction(label="三民大昌店", data="action=update_store&store=三民店", display_text="三民大昌店")),
+                QuickReplyItem(action=PostbackAction(label="苓雅青年店", data="action=update_store&store=苓雅店", display_text="苓雅青年店")),
+            ])
+        )
     prompts = {
         "name":    (WAITING_NAME,    "請重新輸入您的姓名："),
         "phone":   (WAITING_PHONE,   "請重新輸入您的電話："),
@@ -267,10 +276,10 @@ def handle_edit_field(user_id, field, session):
 def _review_card(session):
     """讓客戶確認填寫內容的摘要卡片"""
     appt_type = session["appt_type"]
-    icon = "📅" if appt_type == "丈量預約" else "🏠"
+    type_display = f"📅 {appt_type}" if appt_type == "丈量預約" else appt_type
 
     rows = [
-        ("類型", f"{icon} {appt_type}"),
+        ("類型", type_display),
         ("日期", session["date"]),
         ("時間", session["time"]),
         ("姓名", session.get("name", "")),
@@ -280,7 +289,10 @@ def _review_card(session):
         rows.append(("地址", session.get("address", "")))
     if session.get("product"):
         if appt_type == "門市參觀":
-            rows.append(("門市", _STORE_FULL_NAMES.get(session["product"], session["product"])))
+            full_name = _STORE_FULL_NAMES.get(session["product"], session["product"])
+            addr = _STORE_ADDRESSES.get(session["product"], "")
+            rows.append(("門市", full_name))
+            rows.append(("地址", addr))
         else:
             rows.append(("商品", session["product"]))
 
@@ -324,7 +336,11 @@ def _review_card(session):
         QuickReplyItem(action=PostbackAction(label="✏️ 改姓名", data="action=edit_field&field=name", display_text="✏️ 改姓名")),
         QuickReplyItem(action=PostbackAction(label="✏️ 改電話", data="action=edit_field&field=phone", display_text="✏️ 改電話")),
     ]
-    if appt_type != "門市參觀":
+    if appt_type == "門市參觀":
+        edit_items.append(
+            QuickReplyItem(action=PostbackAction(label="✏️ 改門市", data="action=edit_field&field=store", display_text="✏️ 改門市"))
+        )
+    else:
         edit_items.append(
             QuickReplyItem(action=PostbackAction(label="✏️ 改地址", data="action=edit_field&field=address", display_text="✏️ 改地址"))
         )

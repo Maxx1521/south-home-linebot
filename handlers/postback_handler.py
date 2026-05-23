@@ -6,7 +6,7 @@ from handlers.catalog import get_category_flex, get_products_flex
 from handlers.booking import (
     start_booking, select_time, ask_for_name,
     handle_confirm, handle_edit_field, get_session, _delete_session,
-    push_appointment_confirmation
+    push_appointment_confirmation, _review_card, _upsert_session
 )
 from handlers.location import start_location_inquiry
 
@@ -76,6 +76,15 @@ def handle_postback(event, line_bot_api):
 
     elif action == "location_inquiry":
         reply = start_location_inquiry(user_id)
+
+    elif action == "update_store":
+        session = get_session(user_id)
+        if session and store:
+            updated = {**session, "product": store}
+            _upsert_session(updated)
+            reply = _review_card(updated)
+        else:
+            reply = TextMessage(text="找不到您的預約資料，請重新開始。")
 
     elif action == "confirm_appointment":
         customer_id = data.get("customer_id", [""])[0]
