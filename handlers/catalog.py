@@ -286,7 +286,7 @@ def get_brand_products_flex(brand):
                 "style": "secondary",
                 "action": {
                     "type": "postback",
-                    "label": "🎨 查看花色",
+                    "label": "查看花色",
                     "data": f"action=view_colors&brand={brand}&product={p['name']}",
                 },
             })
@@ -351,17 +351,8 @@ def get_product_colors(brand, product_name):
             "type": "button",
             "style": "primary",
             "color": "#5C8D5E",
-            "action": {"type": "uri", "label": "🔗 查看完整花色圖鑑", "uri": url},
+            "action": {"type": "uri", "label": "查看完整花色圖鑑", "uri": url},
         })
-    footer_buttons.append({
-        "type": "button",
-        "style": "secondary",
-        "action": {
-            "type": "postback",
-            "label": "預約到府丈量",
-            "data": f"action=booking&product={brand} {product_name}",
-        },
-    })
 
     bubbles = []
     for color in colors:
@@ -381,16 +372,16 @@ def get_product_colors(brand, product_name):
                     {"type": "text", "text": brand, "size": "sm", "color": "#888888"},
                     {"type": "text", "text": product_name, "weight": "bold", "size": "md", "margin": "sm"},
                     {"type": "text", "text": color, "weight": "bold", "size": "lg", "color": "#333333", "margin": "sm"},
-                    {"type": "text", "text": product["price"], "size": "sm", "color": "#4CAF50", "margin": "md", "weight": "bold"},
                 ],
             },
             "footer": {
                 "type": "box",
                 "layout": "vertical",
-                "spacing": "sm",
                 "contents": footer_buttons,
-            },
+            } if footer_buttons else None,
         }
+        if not footer_buttons:
+            bubble.pop("footer")
         bubbles.append(bubble)
 
     carousel = {"type": "carousel", "contents": bubbles}
