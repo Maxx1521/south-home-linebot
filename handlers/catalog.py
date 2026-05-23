@@ -346,11 +346,6 @@ def get_product_colors(brand, product_name):
     colors_text = "・".join(colors)
     url = product.get("url")
 
-    color_items = [
-        {"type": "text", "text": f"🎨 共 {len(colors)} 款花色", "weight": "bold", "size": "sm", "color": "#5C8D5E"},
-        {"type": "text", "text": colors_text, "size": "sm", "color": "#444444", "wrap": True, "margin": "sm"},
-    ]
-
     footer_buttons = []
     if url:
         footer_buttons.append({
@@ -371,16 +366,22 @@ def get_product_colors(brand, product_name):
 
     bubble = {
         "type": "bubble",
+        "hero": {
+            "type": "image",
+            "url": info["image"],
+            "size": "full",
+            "aspectRatio": "20:13",
+            "aspectMode": "cover",
+        },
         "body": {
             "type": "box",
             "layout": "vertical",
-            "spacing": "sm",
             "contents": [
                 {"type": "text", "text": brand, "size": "sm", "color": "#888888"},
-                {"type": "text", "text": product_name, "weight": "bold", "size": "lg", "margin": "sm"},
+                {"type": "text", "text": product_name, "weight": "bold", "size": "md", "margin": "sm"},
                 {"type": "text", "text": product["desc"], "size": "sm", "color": "#666666", "margin": "sm", "wrap": True},
-                {"type": "separator", "margin": "md"},
-                *color_items,
+                {"type": "text", "text": f"🎨 共 {len(colors)} 款花色", "size": "sm", "color": "#5C8D5E", "margin": "md", "weight": "bold"},
+                {"type": "text", "text": colors_text, "size": "sm", "color": "#444444", "wrap": True, "margin": "sm"},
             ],
         },
         "footer": {
