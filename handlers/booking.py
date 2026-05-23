@@ -159,7 +159,7 @@ def start_booking(product=None, appt_type="丈量預約", store=None, user_id=No
         )
     if appt_type == "門市參觀" and store:
         addr = _STORE_ADDRESSES.get(store, "")
-        text = f"🏠 {store}\n📍 {addr}\n\n請選擇預約日期\n若預約時間不在選單上，請直接輸入日期"
+        text = f"{store}/{addr}\n\n請選擇預約日期\n若預約時間不在選單上，請直接輸入日期"
     else:
         icon = "📅" if appt_type == "丈量預約" else "🏠"
         text = f"{icon} {appt_type}\n\n請選擇預約日期\n若預約時間不在選單上，請直接輸入日期"
