@@ -37,12 +37,14 @@ LAMINATE_BRANDS = {
                 "desc": "9.5mm｜抗水超耐磨｜日系花色設計",
                 "price": "NT$ 3,700/坪",
                 "colors": ["宮崎白梣", "富山白橡", "千葉秋香", "佐賀榆木", "京都淺橡", "奈良灰橡", "長野檜木", "熊本橡木"],
+                "url": "https://www.kaiser-floor.com/products/index.php?group_id=12876&second_id=22075&title_id=14315",
             },
             {
                 "name": "尊爵款",
                 "desc": "13.5mm｜頂級厚實踏感｜精選花色",
                 "price": "NT$ 4,250/坪",
                 "colors": ["高知橡木", "姬路白橡", "銀山淺橡", "慕尼黑"],
+                "url": "https://www.kaiser-floor.com/products/index.php?group_id=12876&second_id=22075&title_id=14315",
             },
         ],
     },
@@ -339,6 +341,53 @@ def get_product_colors(brand, product_name):
     product = next((p for p in info["products"] if p["name"] == product_name), None)
     if not product or not product.get("colors"):
         return TextMessage(text="此款式花色資料尚未建立，歡迎來門市看實品！")
+
     colors = product["colors"]
     colors_text = "・".join(colors)
-    return TextMessage(text=f"🎨 {brand}｜{product_name}\n共 {len(colors)} 款花色：\n\n{colors_text}\n\n想看實品？歡迎預約到府丈量或來門市！")
+    url = product.get("url")
+
+    color_items = [
+        {"type": "text", "text": f"🎨 共 {len(colors)} 款花色", "weight": "bold", "size": "sm", "color": "#5C8D5E"},
+        {"type": "text", "text": colors_text, "size": "sm", "color": "#444444", "wrap": True, "margin": "sm"},
+    ]
+
+    footer_buttons = []
+    if url:
+        footer_buttons.append({
+            "type": "button",
+            "style": "primary",
+            "color": "#5C8D5E",
+            "action": {"type": "uri", "label": "🔗 查看完整花色圖鑑", "uri": url},
+        })
+    footer_buttons.append({
+        "type": "button",
+        "style": "secondary",
+        "action": {
+            "type": "postback",
+            "label": "預約到府丈量",
+            "data": f"action=booking&product={brand} {product_name}",
+        },
+    })
+
+    bubble = {
+        "type": "bubble",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "contents": [
+                {"type": "text", "text": brand, "size": "sm", "color": "#888888"},
+                {"type": "text", "text": product_name, "weight": "bold", "size": "lg", "margin": "sm"},
+                {"type": "text", "text": product["desc"], "size": "sm", "color": "#666666", "margin": "sm", "wrap": True},
+                {"type": "separator", "margin": "md"},
+                *color_items,
+            ],
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "contents": footer_buttons,
+        },
+    }
+    return FlexMessage(alt_text=f"{brand} {product_name} 花色", contents=FlexContainer.from_dict(bubble))
