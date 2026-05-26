@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>地板產品系列 | 南島家居 South Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --green:  #5C8D5E;
@@ -30,10 +33,17 @@ body {
   padding: 0 48px; gap: 36px;
 }
 .site-logo {
-  font-size: 16px; font-weight: 700; letter-spacing: 0.04em;
+  font-family: 'Noto Serif TC', 'Georgia', serif;
+  font-size: 15px; font-weight: 500; letter-spacing: 0.1em;
   text-decoration: none; color: var(--dark); white-space: nowrap;
+  display: flex; align-items: baseline; gap: 8px;
 }
 .site-logo em { color: var(--green); font-style: normal; }
+.site-logo .logo-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; font-weight: 300; font-style: italic;
+  letter-spacing: 0.18em; color: var(--gray);
+}
 .brand-nav {
   flex: 1; display: flex; overflow-x: auto; scrollbar-width: none;
 }
@@ -97,11 +107,14 @@ main { padding-top: 56px; }
   color: white; text-align: center; padding: 40px;
 }
 .eyebrow {
-  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; font-weight: 400; font-style: italic;
+  letter-spacing: 0.28em;
   opacity: .65; margin-bottom: 20px;
 }
 .page-hero-content h1 {
-  font-size: clamp(34px,5.5vw,70px); font-weight: 200;
+  font-family: 'Noto Serif TC', 'Georgia', serif;
+  font-size: clamp(34px,5.5vw,70px); font-weight: 300;
   letter-spacing: 0.14em; line-height: 1.2; margin-bottom: 18px;
 }
 .page-hero-content .sub {
@@ -122,7 +135,8 @@ main { padding-top: 56px; }
   text-transform: uppercase; color: var(--green); margin-bottom: 14px;
 }
 .brand-intro h2 {
-  font-size: clamp(26px,3.5vw,50px); font-weight: 200;
+  font-family: 'Noto Serif TC', 'Georgia', serif;
+  font-size: clamp(26px,3.5vw,50px); font-weight: 300;
   letter-spacing: 0.12em; line-height: 1.2; margin-bottom: 16px;
 }
 .brand-intro .desc {
@@ -392,7 +406,7 @@ footer {
 
 <!-- ─── Header ──────────────────────────────────────────────────── -->
 <header class="site-header">
-  <a class="site-logo" href="#"><em>南島</em>家居 South Home</a>
+  <a class="site-logo" href="#"><em>南島</em>家居<span class="logo-en">South Home</span></a>
   <nav class="brand-nav">
     <a href="#sanwell">山井</a>
     <a href="#sanxia">三夏</a>
