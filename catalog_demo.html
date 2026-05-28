@@ -1322,7 +1322,7 @@ function showProductPage(d) {
   footerEl.style.display = 'none';
   document.getElementById('product-page').style.display = 'block';
   window.scrollTo(0, 0);
-  history.pushState({ page: 'product', data: d }, '', '#product');
+  history.pushState({ page: 'product', data: Object.fromEntries(Object.entries(d)) }, '', '#product');
 }
 </script>
 </body>
