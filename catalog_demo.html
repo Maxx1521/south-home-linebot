@@ -110,10 +110,13 @@ main { padding-top: 56px; }
   overflow: hidden; background: #111;
 }
 .page-hero img {
+  position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
   object-position: center bottom;
-  opacity: .55; display: block;
+  opacity: 0; display: block;
+  transition: opacity 1.2s ease;
 }
+.page-hero img.active { opacity: .55; }
 .page-hero-content {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
@@ -450,7 +453,11 @@ footer {
 
 <!-- ─── Page Hero ───────────────────────────────────────────────── -->
 <section class="page-hero">
-  <img src="https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/hero_bg.jpg" alt="南島家居地板">
+  <img class="active" src="https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/hero_bg.jpg" alt="">
+  <img src="https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/hero2.jpg" alt="">
+  <img src="https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/hero3.jpg" alt="">
+  <img src="https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/hero4.jpg" alt="">
+  <img src="https://raw.githubusercontent.com/Maxx1521/south-home-linebot/master/assets/hero5.jpg" alt="">
   <div class="page-hero-content">
     <p class="eyebrow">South Home · 南島家居 · 高雄木地板專家</p>
     <h1>木地板<br>選材美學</h1>
@@ -951,6 +958,17 @@ footer {
 </footer>
 
 <script>
+// ── Hero slideshow ──────────────────────────────────────────────────
+(function(){
+  const imgs = document.querySelectorAll('.page-hero img');
+  let cur = 0;
+  setInterval(() => {
+    imgs[cur].classList.remove('active');
+    cur = (cur + 1) % imgs.length;
+    imgs[cur].classList.add('active');
+  }, 5000);
+})();
+
 // ── Fade-in on scroll ───────────────────────────────────────────────
 const io = new IntersectionObserver(
   entries => entries.forEach(e => {
