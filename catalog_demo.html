@@ -1256,7 +1256,7 @@ if (location.hash) {
 let lastBrandId = null;
 
 document.getElementById('ppage-back').addEventListener('click', () => {
-  route(lastBrandId || 'sanwell');
+  history.back();
 });
 
 document.addEventListener('click', e => {
