@@ -388,8 +388,28 @@ footer {
   overflow: hidden; border-radius: 2px;
   box-shadow: 0 24px 80px rgba(0,0,0,.25);
 }
-.pmodal-img { background: #f5f0eb; overflow: hidden; }
-.pmodal-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pmodal-img {
+  background: #f5f0eb; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.pmodal-main {
+  flex: 1; overflow: hidden; position: relative;
+}
+.pmodal-main img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: opacity .2s ease;
+}
+.pmodal-thumbs {
+  display: flex; gap: 6px; padding: 8px;
+  background: #ece8e2;
+}
+.pmodal-thumb {
+  width: 56px; height: 44px; flex-shrink: 0;
+  overflow: hidden; cursor: pointer; opacity: .55;
+  border: 2px solid transparent; transition: opacity .15s, border-color .15s;
+}
+.pmodal-thumb.active { opacity: 1; border-color: #4a4a4a; }
+.pmodal-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pmodal-info {
   padding: 48px 40px; display: flex; flex-direction: column;
   gap: 0; overflow-y: auto;
@@ -431,7 +451,9 @@ footer {
 }
 @media (max-width: 640px) {
   .pmodal-card { grid-template-columns: 1fr; }
-  .pmodal-img { height: 220px; }
+  .pmodal-img { height: 260px; }
+  .pmodal-main { flex: 1; }
+  .pmodal-thumb { width: 48px; height: 38px; }
   .pmodal-info { padding: 28px 24px; }
   .pmodal-name { font-size: 22px; }
 }
@@ -835,7 +857,7 @@ footer {
   <div class="color-section fi">
     <div class="sec-heading">Aqua+ 色系 · 8 種花色</div>
     <div class="color-grid">
-      <div class="color-card pcard" data-name="洛哈奶油橡木" data-code="EL2154" data-series="EGGER Aqua+" data-img="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2154-2-495x400.png" data-specs="厚度：8–10 mm｜防水：HydroSeal® 封邊｜耐磨：AC4｜產地：奧地利"><div class="color-card-img"><img src="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2154-2-495x400.png" alt="洛哈奶油橡木" loading="lazy"></div><div class="color-name">洛哈奶油橡木</div></div>
+      <div class="color-card pcard" data-name="洛哈奶油橡木" data-code="EL2154" data-series="EGGER Aqua+" data-imgs="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2154-2-845x614.png|https://tcfl.com.tw/wp-content/uploads/2025/04/EL2154-2-1-845x684.jpg|https://tcfl.com.tw/wp-content/uploads/2025/04/EL2154-3-1-845x684.jpg" data-specs="厚度：8–10 mm｜防水：HydroSeal® 封邊｜耐磨：AC4｜產地：奧地利"><div class="color-card-img"><img src="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2154-2-495x400.png" alt="洛哈奶油橡木" loading="lazy"></div><div class="color-name">洛哈奶油橡木</div></div>
       <div class="color-card"><div class="color-card-img"><img src="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2113-495x400.png" alt="皮諾沙棕橡木" loading="lazy"></div><div class="color-name">皮諾沙棕橡木</div></div>
       <div class="color-card"><div class="color-card-img"><img src="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2525-495x400.png" alt="榭菲爾德刺槐" loading="lazy"></div><div class="color-name">榭菲爾德刺槐</div></div>
       <div class="color-card"><div class="color-card-img"><img src="https://tcfl.com.tw/wp-content/uploads/2025/04/EL2026-495x400.png" alt="維多利亞白橡木" loading="lazy"></div><div class="color-name">維多利亞白橡木</div></div>
@@ -1237,7 +1259,10 @@ if (location.hash) {
   <div class="pmodal-overlay" id="pmodal-overlay"></div>
   <div class="pmodal-card">
     <button class="pmodal-close" id="pmodal-close" aria-label="關閉">✕</button>
-    <div class="pmodal-img"><img id="pmodal-img" src="" alt=""></div>
+    <div class="pmodal-img">
+      <div class="pmodal-main"><img id="pmodal-main-img" src="" alt=""></div>
+      <div class="pmodal-thumbs" id="pmodal-thumbs"></div>
+    </div>
     <div class="pmodal-info">
       <div class="pmodal-tag" id="pmodal-tag"></div>
       <div class="pmodal-name" id="pmodal-name"></div>
@@ -1256,11 +1281,45 @@ document.getElementById('pmodal-close').addEventListener('click', closePModal);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePModal(); });
 
 document.addEventListener('click', e => {
+  // Thumbnail switch
+  const thumb = e.target.closest('.pmodal-thumb');
+  if (thumb) {
+    document.querySelectorAll('.pmodal-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    const mainImg = document.getElementById('pmodal-main-img');
+    mainImg.style.opacity = '0';
+    setTimeout(() => { mainImg.src = thumb.dataset.src; mainImg.style.opacity = '1'; }, 150);
+    return;
+  }
+
+  // Open modal
   const card = e.target.closest('.pcard');
   if (!card) return;
   const d = card.dataset;
-  document.getElementById('pmodal-img').src = d.img;
-  document.getElementById('pmodal-img').alt = d.name;
+  const imgs = (d.imgs || d.img || '').split('|').filter(Boolean);
+
+  // Main image
+  const mainImg = document.getElementById('pmodal-main-img');
+  mainImg.src = imgs[0] || '';
+  mainImg.alt = d.name || '';
+
+  // Thumbnails
+  const thumbsEl = document.getElementById('pmodal-thumbs');
+  thumbsEl.innerHTML = '';
+  if (imgs.length > 1) {
+    imgs.forEach((url, i) => {
+      const div = document.createElement('div');
+      div.className = 'pmodal-thumb' + (i === 0 ? ' active' : '');
+      div.dataset.src = url;
+      div.innerHTML = `<img src="${url}" alt="" loading="lazy">`;
+      thumbsEl.appendChild(div);
+    });
+    thumbsEl.style.display = 'flex';
+  } else {
+    thumbsEl.style.display = 'none';
+  }
+
+  // Info
   document.getElementById('pmodal-tag').textContent = d.series || '';
   document.getElementById('pmodal-name').textContent = d.name || '';
   document.getElementById('pmodal-code').textContent = d.code ? '型號　' + d.code : '';
@@ -1273,6 +1332,7 @@ document.addEventListener('click', e => {
     row.innerHTML = `<span>${label}</span>${val || ''}`;
     specsEl.appendChild(row);
   });
+
   pmodal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 });
