@@ -361,11 +361,20 @@ footer {
 .color-card-img { aspect-ratio: 1/1; }
 
 /* ── Product Detail Modal ────────────────────────────── */
+@keyframes pmodal-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pcard-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 .pcard { cursor: zoom-in; }
 .pmodal {
   position: fixed; inset: 0; z-index: 900;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
+  animation: pmodal-in .22s ease;
 }
 .pmodal-overlay {
   position: absolute; inset: 0; background: rgba(0,0,0,.55);
@@ -373,6 +382,7 @@ footer {
 }
 .pmodal-card {
   position: relative; z-index: 1; background: #fff;
+  animation: pcard-in .28s ease;
   display: grid; grid-template-columns: 1fr 1fr;
   max-width: 820px; width: 100%; max-height: 88vh;
   overflow: hidden; border-radius: 2px;
