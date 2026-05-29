@@ -1378,12 +1378,24 @@ window.addEventListener('popstate', e => {
   else showHero();
 });
 
-// init — handle direct URL with hash (e.g. shared link)
-if (location.hash) {
-  route(location.hash.slice(1));
-} else {
-  showHero();
-}
+// init — restore page from URL hash on load/refresh
+(function initRoute() {
+  const hash = location.hash.slice(1);
+  if (!hash || hash === 'about' || hash === 'warranty') {
+    showHero();
+    history.replaceState({ page: 'home' }, '', location.pathname);
+  } else if (hash === 'contact') {
+    showContact();
+    history.replaceState({ page: 'contact' }, '', '#contact');
+  } else if (hash === 'product') {
+    // product detail can't be restored without card data, go home
+    showHero();
+    history.replaceState({ page: 'home' }, '', location.pathname);
+  } else {
+    showBrand(hash);
+    history.replaceState({ page: 'brand', id: hash }, '', '#' + hash);
+  }
+})();
 </script>
 
 <!-- ── Product Detail Page ───────────────────────────────────────── -->
