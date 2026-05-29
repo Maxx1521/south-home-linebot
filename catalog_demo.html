@@ -477,11 +477,18 @@ footer {
 }
 .menu-overlay a:first-child { border-top: 1px solid var(--border); }
 .menu-overlay a:hover { color: var(--green); }
-.menu-overlay .overlay-sub {
-  font-size: 13px; color: var(--gray); letter-spacing: 0.08em;
-  padding: 12px 0; width: 100%; text-align: center;
+.acc-group { width: 100%; }
+.overlay-accordion {
+  font-size: 22px; font-weight: 400; letter-spacing: 0.12em;
+  color: var(--dark); padding: 20px 0; width: 100%; text-align: center;
   border-bottom: 1px solid var(--border);
+  cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
 }
+.acc-arrow { font-size: 14px; transition: transform .25s; display: inline-block; }
+.acc-group.open .acc-arrow { transform: rotate(180deg); }
+.acc-panel { display: none; flex-direction: column; width: 100%; }
+.acc-group.open .acc-panel { display: flex; }
 .menu-overlay .overlay-cat {
   font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
   color: var(--dark); text-transform: uppercase;
@@ -569,23 +576,31 @@ footer {
 <div class="menu-overlay" id="menuOverlay">
   <button class="menu-close" id="menuClose">✕</button>
   <a href="#about" class="menu-link">關於我們</a>
-  <div class="overlay-sub">品牌資訊</div>
-  <a href="#sanwell" class="menu-brand">山井 ヤマイ</a>
-  <a href="#egger" class="menu-brand">EGGER</a>
-  <a href="#robina" class="menu-brand">羅賓地板</a>
-  <a href="#dongwhal" class="menu-brand">都華地板</a>
-  <a href="#krono-herringbone" class="menu-brand">Krono 人字拼系列</a>
-  <a href="#krono-wide" class="menu-brand">Krono 寬版系列</a>
-  <a href="#panstone" class="menu-brand">派斯 Panstone</a>
-  <a href="#twin-oaks" class="menu-brand">Twin Oaks 雙橡園</a>
-  <a href="#sanxia" class="menu-brand">三夏晶鋼系列</a>
-  <a href="#decoria" class="menu-brand">DECORIA</a>
-  <div class="overlay-sub">產品分類</div>
-  <a href="#sanwell" class="menu-brand">超耐磨卡扣木地板</a>
-  <a href="#twin-oaks" class="menu-brand">海島型實木地板</a>
-  <a href="#sanxia" class="menu-brand">SPC 石塑地板</a>
-  <a href="#decoria" class="menu-brand">PVC 塑膠地磚</a>
-  <a href="#" class="menu-brand">WPC 戶外塑木地板</a>
+  <div class="acc-group">
+    <div class="overlay-accordion">品牌資訊 <span class="acc-arrow">▾</span></div>
+    <div class="acc-panel">
+      <a href="#sanwell" class="menu-brand">山井 ヤマイ</a>
+      <a href="#egger" class="menu-brand">EGGER</a>
+      <a href="#robina" class="menu-brand">羅賓地板</a>
+      <a href="#dongwhal" class="menu-brand">都華地板</a>
+      <a href="#krono-herringbone" class="menu-brand">Krono 人字拼系列</a>
+      <a href="#krono-wide" class="menu-brand">Krono 寬版系列</a>
+      <a href="#panstone" class="menu-brand">派斯 Panstone</a>
+      <a href="#twin-oaks" class="menu-brand">Twin Oaks 雙橡園</a>
+      <a href="#sanxia" class="menu-brand">三夏晶鋼系列</a>
+      <a href="#decoria" class="menu-brand">DECORIA</a>
+    </div>
+  </div>
+  <div class="acc-group">
+    <div class="overlay-accordion">產品分類 <span class="acc-arrow">▾</span></div>
+    <div class="acc-panel">
+      <a href="#sanwell" class="menu-brand">超耐磨卡扣木地板</a>
+      <a href="#twin-oaks" class="menu-brand">海島型實木地板</a>
+      <a href="#sanxia" class="menu-brand">SPC 石塑地板</a>
+      <a href="#decoria" class="menu-brand">PVC 塑膠地磚</a>
+      <a href="#" class="menu-brand">WPC 戶外塑木地板</a>
+    </div>
+  </div>
   <a href="#warranty" class="menu-link">保固範圍</a>
   <a href="#cases" class="menu-link">案例分享</a>
   <a href="#process" class="menu-link">服務流程</a>
@@ -1234,6 +1249,16 @@ const menuOverlay = document.getElementById('menuOverlay');
 const menuClose = document.getElementById('menuClose');
 menuBtn.addEventListener('click', () => menuOverlay.classList.add('open'));
 menuClose.addEventListener('click', () => menuOverlay.classList.remove('open'));
+
+// ── Mobile accordion ─────────────────────────────────────────────────
+document.querySelectorAll('.overlay-accordion').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.acc-group').classList.toggle('open');
+  });
+});
+menuOverlay.querySelectorAll('.acc-panel a').forEach(a => {
+  a.addEventListener('click', () => menuOverlay.classList.remove('open'));
+});
 
 // ── Hero slideshow ───────────────────────────────────────────────────
 (function(){
