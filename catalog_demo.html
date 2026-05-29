@@ -164,6 +164,7 @@ main { padding-top: 56px; }
   display: flex; align-items: center; justify-content: center;
   pointer-events: none;
 }
+.hero-title-short { display: none; }
 .compact-hero-title span {
   font-family: 'Noto Serif TC', Georgia, serif;
   font-size: clamp(36px, 5.5vw, 80px);
@@ -533,6 +534,10 @@ footer {
   .site-header { padding: 0 16px; gap: 16px; }
   .brand-brief { padding: 28px 24px 0; flex-direction: column; gap: 16px; }
   .compact-hero { height: 300px; }
+  #egger .compact-hero { height: 300px; }
+  #twin-oaks .compact-hero img { object-position: 30% center; }
+  .hero-title-short { display: inline; }
+  .hero-title-full { display: none; }
   .brand-nav, .header-cta { display: none; }
   .menu-btn { display: flex; }
 }
@@ -1002,7 +1007,7 @@ footer {
 <section class="brand-section" id="krono-herringbone">
   <div class="compact-hero fi">
     <img src="https://www.krono-original.com/themes/custom/krono_theme/images/classic-category/floor-classic.jpg" alt="KRONO">
-    <div class="compact-hero-title"><span>KRONO ORIGINAL</span></div>
+    <div class="compact-hero-title"><span class="hero-title-full">KRONO ORIGINAL</span><span class="hero-title-short">KRONO</span></div>
     <div class="compact-hero-content">
       <div class="brand-tag">KRONO Original 畢卡索 · 瑞士超耐磨木地板</div>
       <h2>Picasso · KO 系列</h2>
