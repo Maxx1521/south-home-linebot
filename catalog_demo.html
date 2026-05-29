@@ -463,45 +463,46 @@ footer {
 }
 .menu-overlay {
   display: none; position: fixed; inset: 0; z-index: 300;
-  background: #2e2e2e;
+  background: #edece8;
   flex-direction: column; align-items: center; justify-content: flex-start; gap: 0;
   overflow-y: auto; padding-top: 64px;
 }
 .menu-overlay.open { display: flex; }
 .menu-overlay a {
   font-size: 22px; font-weight: 400; letter-spacing: 0.12em;
-  color: #e8e8e8; text-decoration: none;
+  color: var(--dark); text-decoration: none;
   padding: 20px 0; width: 100%; text-align: center;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
   transition: color .15s;
 }
-.menu-overlay a:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
-.menu-overlay a:hover { color: #fff; }
+.menu-overlay a:first-child { border-top: 1px solid rgba(0,0,0,0.08); }
+.menu-overlay a:hover { color: #555; }
 .acc-group { width: 100%; }
 .overlay-accordion {
   font-size: 22px; font-weight: 400; letter-spacing: 0.12em;
   color: #fff; padding: 20px 0; width: 100%; text-align: center;
-  background: #1e1e1e;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: #888;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
   cursor: pointer; user-select: none;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .acc-arrow { font-size: 14px; transition: transform .25s; display: inline-block; }
 .acc-group.open .acc-arrow { transform: rotate(180deg); }
-.acc-panel { display: none; flex-direction: column; width: 100%; }
+.acc-panel { display: none; flex-direction: column; width: 100%; background: #edece8; }
 .acc-group.open .acc-panel { display: flex; }
 .menu-overlay a.menu-link {
-  background: #1e1e1e; color: #fff;
+  background: #888; color: #fff;
 }
+.menu-overlay a.menu-link:hover { color: #edece8; }
 .menu-overlay .menu-brand {
-  font-size: 15px !important; color: #aaa !important;
+  font-size: 15px !important; color: #555 !important;
   padding: 10px 0 !important;
   border-bottom: none !important;
 }
 .menu-overlay .menu-brand:first-child { border-top: none !important; }
 .menu-close {
   position: fixed; top: 16px; right: 20px; z-index: 301;
-  background: none; border: none; font-size: 28px; cursor: pointer; color: #fff;
+  background: none; border: none; font-size: 28px; cursor: pointer; color: var(--dark);
 }
 
 /* ── Responsive ──────────────────────────────────────── */
