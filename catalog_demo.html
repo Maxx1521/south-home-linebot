@@ -28,13 +28,16 @@ body {
   background: rgba(255,255,255,0.97);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
-  height: 72px;
-  display: flex; align-items: center;
-  padding: 0 48px; gap: 36px;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
 }
 .site-logo {
-  text-decoration: none; display: flex; flex-direction: column; justify-content: center;
-  flex-shrink: 0; margin-left: 24px; gap: 1px;
+  text-decoration: none; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px; padding: 0 28px;
 }
 .brand-wordmark {
   font-family: 'Noto Serif TC', serif; font-weight: 300;
@@ -45,13 +48,14 @@ body {
   font-size: 13px; letter-spacing: 0.35em; color: var(--gray); line-height: 1;
 }
 .brand-nav {
-  flex: 1; display: flex; align-items: center; gap: 0;
-  justify-content: flex-end;
+  display: flex; align-items: center; gap: 0;
 }
+.brand-nav-left { justify-content: flex-end; }
+.brand-nav-right { justify-content: flex-start; }
 .brand-nav > a, .nav-dropdown > a {
-  padding: 0 18px; height: 72px;
+  padding: 0 16px; height: 80px;
   display: flex; align-items: center;
-  font-size: 15px; font-weight: 500;
+  font-size: 14px; font-weight: 500;
   color: var(--gray); text-decoration: none;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
@@ -118,7 +122,7 @@ body {
 }
 .btn-outline:hover { background: var(--dark); color: white; border-color: var(--dark); }
 
-main { padding-top: 56px; }
+main { padding-top: 80px; }
 
 /* ── Page Hero ───────────────────────────────────────── */
 .page-hero {
@@ -156,7 +160,7 @@ main { padding-top: 56px; }
 .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
 
 /* ── Brand section wrapper ───────────────────────────── */
-.brand-section { scroll-margin-top: 56px; }
+.brand-section { scroll-margin-top: 80px; }
 
 /* ── Compact brand banner — clean image, no overlay ──── */
 .compact-hero {
@@ -684,8 +688,8 @@ footer {
   #twin-oaks .compact-hero img { object-position: 30% center; }
   .hero-title-short { display: inline; }
   .hero-title-full { display: none; }
-  .brand-nav, .header-cta { display: none; }
-  .menu-btn { display: flex; }
+  .brand-nav-left, .brand-nav-right, .header-cta { display: none; }
+  .menu-btn { display: flex; grid-column: 3; grid-row: 1; justify-self: end; }
 }
 @media (max-width: 600px) {
   .other-grid { grid-template-columns: 1fr; }
@@ -697,8 +701,7 @@ footer {
 
 <!-- ─── Header ──────────────────────────────────────────────────── -->
 <header class="site-header">
-  <a class="site-logo" href="#"><span class="brand-wordmark">壹室</span><span class="brand-wordmark-en">ISSITU</span></a>
-  <nav class="brand-nav">
+  <nav class="brand-nav brand-nav-left">
     <a href="#about">關於我們</a>
     <div class="nav-dropdown">
       <a href="#">代理品牌 ▾</a>
@@ -723,8 +726,10 @@ footer {
         <a href="#">WPC 戶外塑木地板</a>
       </div>
     </div>
+  </nav>
+  <a class="site-logo" href="#"><span class="brand-wordmark">壹室</span><span class="brand-wordmark-en">ISSITU</span></a>
+  <nav class="brand-nav brand-nav-right">
     <a href="#warranty">保固範圍</a>
-    <a href="#cases">案例分享</a>
     <a href="#process">服務流程</a>
     <a href="#contact">聯絡我們</a>
   </nav>
