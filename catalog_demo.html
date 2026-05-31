@@ -694,7 +694,65 @@ footer {
 }
 
 /* ── SPA initial state ───────────────────────────────── */
-.brand-section, .cta-section, footer, #product-page, #warranty-page, #process-page { display: none; }
+.brand-section, .cta-section, footer, #product-page, #warranty-page, #process-page, #care-page { display: none; }
+
+/* ── Care Page ───────────────────────────────────────── */
+#care-page { background: var(--warm); min-height: 80vh; }
+.care-hd {
+  padding: 168px 80px 56px; max-width: 1100px; margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+.care-hd h1 {
+  font-family: 'Noto Serif TC', serif; font-weight: 300;
+  font-size: clamp(28px, 4vw, 52px); letter-spacing: 0.08em;
+  margin-bottom: 16px; color: var(--dark);
+}
+.care-hd .sub { font-size: 14px; color: var(--gray); line-height: 1.9; max-width: 560px; }
+.care-block {
+  display: grid; grid-template-columns: 1fr 1fr;
+  max-width: 1100px; margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+  padding: 72px 80px;
+  gap: 64px; align-items: center;
+}
+.care-block:last-of-type { border-bottom: none; }
+.care-block.reverse { direction: rtl; }
+.care-block.reverse > * { direction: ltr; }
+.care-illus {
+  background: white; border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px; aspect-ratio: 1;
+}
+.care-illus svg { width: 100%; max-width: 200px; }
+.care-floor-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 14px;
+}
+.care-block h2 {
+  font-family: 'Noto Serif TC', serif; font-weight: 300;
+  font-size: clamp(22px, 2.8vw, 38px); letter-spacing: 0.1em;
+  color: var(--dark); margin-bottom: 28px; line-height: 1.3;
+}
+.care-list { list-style: none; padding: 0; margin: 0; counter-reset: care-c; }
+.care-list li {
+  counter-increment: care-c;
+  display: grid; grid-template-columns: 28px 1fr;
+  gap: 0 10px; padding: 11px 0;
+  font-size: 13px; color: var(--gray); line-height: 1.85;
+  border-bottom: 1px solid var(--border);
+}
+.care-list li:last-child { border-bottom: none; }
+.care-list li::before {
+  content: counter(care-c, decimal-leading-zero);
+  font-size: 10px; font-weight: 700; color: var(--green);
+  letter-spacing: 0.05em; padding-top: 3px;
+}
+@media (max-width: 960px) {
+  .care-hd { padding: 128px 24px 40px; }
+  .care-block { grid-template-columns: 1fr; padding: 48px 24px; gap: 32px; direction: ltr; }
+  .care-block.reverse { direction: ltr; }
+  .care-illus { max-width: 220px; margin: 0 auto; aspect-ratio: auto; padding: 24px; }
+}
 
 /* ── Hamburger menu ──────────────────────────────────── */
 .menu-btn {
@@ -815,7 +873,13 @@ footer {
   <a class="site-logo" href="#"><span class="brand-wordmark">南島</span><span class="brand-wordmark-en">Nandao</span></a>
   <nav class="brand-nav brand-nav-right">
     <a href="#warranty">保固範圍</a>
-    <a href="#process">服務流程</a>
+    <div class="nav-dropdown">
+      <a href="#">施工須知</a>
+      <div class="nav-dropdown-menu">
+        <a href="#process">服務流程</a>
+        <a href="#care">地板保養需知</a>
+      </div>
+    </div>
     <a href="#contact">聯絡我們</a>
   </nav>
   <button class="menu-btn" id="menuBtn" aria-label="選單">
@@ -852,8 +916,13 @@ footer {
     </div>
   </div>
   <a href="#warranty" class="menu-link">保固範圍</a>
-  <a href="#cases" class="menu-link">案例分享</a>
-  <a href="#process" class="menu-link">服務流程</a>
+  <div class="acc-group">
+    <div class="overlay-accordion">施工須知</div>
+    <div class="acc-panel">
+      <a href="#process" class="menu-brand">服務流程</a>
+      <a href="#care" class="menu-brand">地板保養需知</a>
+    </div>
+  </div>
   <a href="#contact" class="menu-link">聯絡我們</a>
 </div>
 
@@ -1622,6 +1691,184 @@ footer {
   </div>
 </section>
 
+<!-- ─── Care Page ──────────────────────────────────────────────────── -->
+<div id="care-page">
+
+  <div class="care-hd">
+    <p class="eyebrow">南島 Nandao</p>
+    <h1>地板保養需知</h1>
+    <p class="sub">每一種地板都有它的個性。了解它習慣的方式，才能讓它陪你走得長久。</p>
+  </div>
+
+  <!-- 海島型實木地板 -->
+  <div class="care-block fi">
+    <div class="care-illus">
+      <svg viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg">
+        <!-- Floor planks -->
+        <rect x="8" y="145" width="184" height="36" fill="#F5F0E8" stroke="#2C2420" stroke-width="1.5" rx="1"/>
+        <line x1="72" y1="145" x2="72" y2="181" stroke="#2C2420" stroke-width="1"/>
+        <line x1="140" y1="145" x2="140" y2="181" stroke="#2C2420" stroke-width="1"/>
+        <!-- Wood grain -->
+        <path d="M18 154 Q35 150 52 154 Q62 157 72 154" stroke="#A89F94" stroke-width="1" fill="none"/>
+        <path d="M18 165 Q38 161 56 165 Q65 167 72 165" stroke="#A89F94" stroke-width="1" fill="none"/>
+        <path d="M80 152 Q105 148 128 152 Q135 154 140 152" stroke="#A89F94" stroke-width="1" fill="none"/>
+        <path d="M80 166 Q108 162 130 166 Q137 168 140 166" stroke="#A89F94" stroke-width="1" fill="none"/>
+        <path d="M148 155 Q163 151 184 155" stroke="#A89F94" stroke-width="1" fill="none"/>
+        <!-- Mop handle -->
+        <line x1="88" y1="32" x2="114" y2="145" stroke="#2C2420" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Mop head -->
+        <ellipse cx="119" cy="148" rx="23" ry="8" fill="#F5F0E8" stroke="#2C2420" stroke-width="2"/>
+        <!-- Mop fibers -->
+        <line x1="100" y1="150" x2="97"  y2="163" stroke="#2C2420" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="109" y1="152" x2="107" y2="165" stroke="#2C2420" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="119" y1="153" x2="119" y2="166" stroke="#2C2420" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="129" y1="152" x2="130" y2="165" stroke="#2C2420" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="138" y1="150" x2="140" y2="163" stroke="#2C2420" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Sweep motion arcs -->
+        <path d="M62 130 Q83 121 106 127" stroke="#8B6F47" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+        <path d="M68 137 Q89 128 112 134" stroke="#8B6F47" stroke-width="1" fill="none" stroke-dasharray="4,3" opacity="0.6"/>
+        <!-- Water drops -->
+        <path d="M46 78 Q49 64 52 78 Q53 85 49 85 Q45 85 46 78Z" fill="#A89F94" stroke="#2C2420" stroke-width="1"/>
+        <path d="M32 100 Q34 90 36 100 Q37 104 34 104 Q31 104 32 100Z" fill="#A89F94" stroke="#2C2420" stroke-width="1" opacity="0.7"/>
+        <path d="M63 60 Q65 52 67 60 Q67.8 64 65 64 Q62.2 64 63 60Z" fill="#A89F94" stroke="#2C2420" stroke-width="1" opacity="0.55"/>
+        <!-- Person head -->
+        <circle cx="80" cy="20" r="13" fill="white" stroke="#2C2420" stroke-width="2"/>
+        <!-- Hair -->
+        <path d="M67 15 Q80 6 93 15" fill="#2C2420" stroke="#2C2420" stroke-width="1" stroke-linecap="round"/>
+        <!-- Eyes -->
+        <circle cx="76" cy="20" r="1.8" fill="#2C2420"/>
+        <circle cx="85" cy="20" r="1.8" fill="#2C2420"/>
+        <!-- Smile -->
+        <path d="M76 26 Q80.5 30 85 26" stroke="#2C2420" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Arm to mop -->
+        <path d="M89 30 Q95 36 92 44" stroke="#2C2420" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="care-text">
+      <div class="care-floor-label">Solid Wood Flooring</div>
+      <h2>海島型<br>實木地板</h2>
+      <ol class="care-list">
+        <li>日常清潔以吸塵為先，再以微濕拖把或抹布輕輕擦拭。避免強酸鹼清潔劑，以保護木質表面的自然光澤。</li>
+        <li>浴室、陽台出入口建議鋪設腳踏墊，讓水氣止步於門口，不帶入木材生活的空間。</li>
+        <li>若不慎潑灑液體，請立即擦拭並開窗風乾，讓木材迅速回到它習慣的乾燥狀態。</li>
+        <li>西曬嚴重的窗口建議加裝窗簾或遮陽，減少陽光長期直射造成的色差與氧化。</li>
+        <li>移動家具時請抬起而非拖拉，為地板保留完整的表面。</li>
+        <li>桌椅腳建議加裝腳墊或護套，減少日常起身坐下產生的細微刮痕積累。</li>
+        <li>保持空氣流通，晴天白天開窗通風，夜晚適時關窗，讓木材與環境和諧共息。</li>
+        <li>室內濕度建議維持在 70–80%。濕度偏高時開啟除濕機，讓木材在舒適的環境中長久穩定。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 超耐磨木地板 -->
+  <div class="care-block reverse fi">
+    <div class="care-illus">
+      <svg viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg">
+        <!-- Floor layers cross-section -->
+        <!-- Backing layer -->
+        <rect x="28" y="155" width="144" height="20" fill="#DDD8D0" stroke="#2C2420" stroke-width="1.5" rx="1"/>
+        <!-- Core layer -->
+        <rect x="28" y="128" width="144" height="28" fill="#F5F0E8" stroke="#2C2420" stroke-width="1.5" rx="1"/>
+        <line x1="48" y1="136" x2="172" y2="136" stroke="#A89F94" stroke-width="0.8"/>
+        <line x1="48" y1="143" x2="172" y2="143" stroke="#A89F94" stroke-width="0.8"/>
+        <line x1="48" y1="150" x2="172" y2="150" stroke="#A89F94" stroke-width="0.8"/>
+        <!-- Decorative layer -->
+        <rect x="28" y="113" width="144" height="16" fill="#E8DFD4" stroke="#2C2420" stroke-width="1.5" rx="1"/>
+        <line x1="38" y1="121" x2="78" y2="121" stroke="#8B6F47" stroke-width="1"/>
+        <line x1="88" y1="121" x2="128" y2="121" stroke="#8B6F47" stroke-width="1"/>
+        <line x1="138" y1="121" x2="162" y2="121" stroke="#8B6F47" stroke-width="1"/>
+        <!-- AC5 wear layer -->
+        <rect x="28" y="100" width="144" height="14" fill="#2C2420" stroke="#2C2420" stroke-width="1.5" rx="1"/>
+        <text x="100" y="110" text-anchor="middle" fill="white" font-size="7.5" font-family="sans-serif" letter-spacing="1.5">AC5 耐磨層</text>
+        <!-- Layer label lines -->
+        <line x1="172" y1="165" x2="182" y2="165" stroke="#A89F94" stroke-width="1"/>
+        <line x1="172" y1="142" x2="182" y2="142" stroke="#A89F94" stroke-width="1"/>
+        <line x1="172" y1="121" x2="182" y2="121" stroke="#A89F94" stroke-width="1"/>
+        <!-- Big checkmark circle -->
+        <circle cx="80" cy="52" r="30" fill="white" stroke="#8B6F47" stroke-width="2.5"/>
+        <path d="M63 52 L74 64 L98 38" stroke="#8B6F47" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Sparkles (manga style) -->
+        <text x="18" y="30" font-size="12" fill="#8B6F47" opacity="0.8">✦</text>
+        <text x="118" y="25" font-size="9" fill="#8B6F47" opacity="0.7">✦</text>
+        <text x="126" y="68" font-size="7" fill="#A89F94" opacity="0.6">✦</text>
+        <!-- Action lines from checkmark -->
+        <line x1="112" y1="38" x2="124" y2="32" stroke="#8B6F47" stroke-width="1.5" opacity="0.5"/>
+        <line x1="115" y1="46" x2="129" y2="44" stroke="#8B6F47" stroke-width="1" opacity="0.4"/>
+        <line x1="113" y1="58" x2="127" y2="60" stroke="#8B6F47" stroke-width="1" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="care-text">
+      <div class="care-floor-label">Laminate Flooring</div>
+      <h2>超耐磨<br>木地板</h2>
+      <ol class="care-list">
+        <li>日常清潔以吸塵為先，再以微濕拖把或抹布擦拭即可。避免強酸鹼清潔劑破壞表面耐磨層。</li>
+        <li>浴室、陽台出入口建議鋪設腳踏墊，阻擋水氣及砂礫進入室內。</li>
+        <li>若不慎潑灑液體，請立即擦拭乾淨，超耐磨表面不怕水漬，但積水仍應盡快處理。</li>
+        <li>西曬嚴重的窗口建議加裝窗簾，避免長期直射日光造成表面褪色。</li>
+        <li>避免以尖銳物拖拉或以重物撞擊地板——再耐磨的表面也值得被善待。</li>
+        <li>保持空氣流通，晴天開窗、夜晚關窗，讓室內維持穩定的溫濕度。</li>
+        <li>室內濕度建議維持在 40–60%，濕度過高時請開啟除濕機。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SPC 石塑地板 -->
+  <div class="care-block fi">
+    <div class="care-illus">
+      <svg viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stone grid floor -->
+        <rect x="8" y="148" width="184" height="34" fill="#F5F0E8" stroke="#2C2420" stroke-width="1.5"/>
+        <line x1="54"  y1="148" x2="54"  y2="182" stroke="#DDD8D0" stroke-width="1"/>
+        <line x1="100" y1="148" x2="100" y2="182" stroke="#DDD8D0" stroke-width="1"/>
+        <line x1="146" y1="148" x2="146" y2="182" stroke="#DDD8D0" stroke-width="1"/>
+        <line x1="8"   y1="165" x2="192" y2="165" stroke="#DDD8D0" stroke-width="1"/>
+        <!-- Water drop bouncing off floor -->
+        <path d="M65 100 Q69 85 73 100 Q75 109 69 109 Q63 109 65 100Z" fill="#A89F94" stroke="#2C2420" stroke-width="1.5"/>
+        <!-- Bounce dotted lines -->
+        <line x1="69" y1="148" x2="52" y2="108" stroke="#2C2420" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="69" y1="148" x2="86" y2="108" stroke="#2C2420" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- Impact burst at floor -->
+        <circle cx="69" cy="148" r="7" fill="none" stroke="#8B6F47" stroke-width="1.5"/>
+        <line x1="62" y1="141" x2="59" y2="138" stroke="#8B6F47" stroke-width="1"/>
+        <line x1="76" y1="141" x2="79" y2="138" stroke="#8B6F47" stroke-width="1"/>
+        <line x1="60" y1="148" x2="56" y2="148" stroke="#8B6F47" stroke-width="1"/>
+        <line x1="78" y1="148" x2="82" y2="148" stroke="#8B6F47" stroke-width="1"/>
+        <!-- Window frame -->
+        <rect x="118" y="18" width="66" height="76" fill="#F5F0E8" stroke="#2C2420" stroke-width="2" rx="2"/>
+        <line x1="151" y1="18" x2="151" y2="94" stroke="#2C2420" stroke-width="1.5"/>
+        <line x1="118" y1="56" x2="184" y2="56" stroke="#2C2420" stroke-width="1.5"/>
+        <!-- Sky in window pane -->
+        <rect x="119" y="19" width="31" height="36" fill="#E8DFD4" opacity="0.4"/>
+        <!-- Ventilation arrows -->
+        <polygon points="95,46 112,46 108,42 108,50" fill="#8B6F47"/>
+        <line x1="82" y1="46" x2="108" y2="46" stroke="#8B6F47" stroke-width="2"/>
+        <polygon points="95,58 112,58 108,54 108,62" fill="#8B6F47" opacity="0.7"/>
+        <line x1="82" y1="58" x2="108" y2="58" stroke="#8B6F47" stroke-width="1.5" opacity="0.7"/>
+        <polygon points="95,70 112,70 108,66 108,74" fill="#8B6F47" opacity="0.5"/>
+        <line x1="82" y1="70" x2="108" y2="70" stroke="#8B6F47" stroke-width="1" opacity="0.5"/>
+        <!-- No acid symbol -->
+        <circle cx="32" cy="58" r="22" fill="white" stroke="#2C2420" stroke-width="2"/>
+        <line x1="16" y1="42" x2="48" y2="74" stroke="#2C2420" stroke-width="2"/>
+        <!-- Bottle icon inside -->
+        <rect x="25" y="46" width="14" height="18" rx="2" fill="#A89F94" opacity="0.4" stroke="#2C2420" stroke-width="1"/>
+        <rect x="28" y="43" width="8" height="4" rx="1" fill="#A89F94" opacity="0.4" stroke="#2C2420" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="care-text">
+      <div class="care-floor-label">SPC Stone Plastic Flooring</div>
+      <h2>SPC<br>石塑地板</h2>
+      <ol class="care-list">
+        <li>日常清潔以吸塵後拖把或抹布擦拭即可，無需特殊保養程序。切勿使用強酸鹼清潔劑。</li>
+        <li>若不慎潑灑有氣味的液體，請立即擦拭，避免殘留氣味滲入板縫影響空間感受。</li>
+        <li>西曬嚴重的窗口建議加裝窗簾，降低因長期高溫導致的輕微熱脹效應。</li>
+        <li>避免以尖銳物拖拉或以重物撞擊地板表面，維護石塑核心的長期穩定。</li>
+        <li>平日保持適度通風，避免長時間門戶緊閉——空氣的流動，也是地板呼吸的方式。</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
 <!-- ─── Process Page ───────────────────────────────────────────────── -->
 <div id="process-page">
 
@@ -1879,7 +2126,8 @@ const dividers = document.querySelectorAll('.divider');
 const ctaEl = document.querySelector('.cta-section');
 const footerEl = document.querySelector('footer');
 const warrantyEl = document.getElementById('warranty-page');
-const processEl = document.getElementById('process-page');
+const processEl  = document.getElementById('process-page');
+const careEl     = document.getElementById('care-page');
 
 function hideAll() {
   heroEl.style.display = 'none';
@@ -1889,6 +2137,7 @@ function hideAll() {
   footerEl.style.display = 'none';
   warrantyEl.style.display = 'none';
   processEl.style.display = 'none';
+  careEl.style.display = 'none';
 }
 
 function showHero() {
@@ -1948,6 +2197,17 @@ function showProcess() {
   window.scrollTo(0, 0);
 }
 
+function showCare() {
+  heroMode = false; darkBg = false; updateHeader();
+  hideAll();
+  careEl.style.display = 'block';
+  footerEl.style.display = 'flex';
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => {
+    careEl.querySelectorAll('.fi').forEach(el => { el.classList.add('vis'); io.unobserve(el); });
+  });
+}
+
 function route(id) {
   if (!id || id === 'about') {
     showHero();
@@ -1958,6 +2218,9 @@ function route(id) {
   } else if (id === 'process') {
     showProcess();
     history.pushState({ page: 'process' }, '', '#process');
+  } else if (id === 'care') {
+    showCare();
+    history.pushState({ page: 'care' }, '', '#care');
   } else if (id === 'contact') {
     showContact();
     history.pushState({ page: 'contact' }, '', '#contact');
@@ -1984,6 +2247,7 @@ window.addEventListener('popstate', e => {
   else if (s && s.page === 'contact') showContact();
   else if (s && s.page === 'warranty') showWarranty();
   else if (s && s.page === 'process') showProcess();
+  else if (s && s.page === 'care') showCare();
   else showHero();
 });
 
@@ -1999,6 +2263,9 @@ window.addEventListener('popstate', e => {
   } else if (hash === 'process') {
     showProcess();
     history.replaceState({ page: 'process' }, '', '#process');
+  } else if (hash === 'care') {
+    showCare();
+    history.replaceState({ page: 'care' }, '', '#care');
   } else if (hash === 'contact') {
     showContact();
     history.replaceState({ page: 'contact' }, '', '#contact');
