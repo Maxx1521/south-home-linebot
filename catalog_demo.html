@@ -186,6 +186,8 @@ main { padding-top: 0; }
   font-size: clamp(20px, 3vw, 36px); letter-spacing: 0.22em;
   color: rgba(255,255,255,0.9); line-height: 1.6;
 }
+.hero-nl { display: none; }
+@media (max-width: 960px) { .hero-nl { display: block; } }
 .hero-slogan-cursor {
   display: inline-block; width: 1px; height: 1.1em;
   background: rgba(255,255,255,0.7); margin-left: 4px;
@@ -1833,6 +1835,11 @@ function runTypewriter() {
     }
     const ch = sloganText[i];
     cursor.insertAdjacentText('beforebegin', ch);
+    if (ch === '，') {
+      const nl = document.createElement('span');
+      nl.className = 'hero-nl';
+      cursor.insertAdjacentElement('beforebegin', nl);
+    }
     i++;
     const delay = ch === '，' ? 620 : 185;
     typewriterTimer = setTimeout(typeNext, delay);
